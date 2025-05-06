@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <title>نتایج آزمون</title>
+  <style>
+    body {
+      font-family: Tahoma;
+      direction: rtl;
+      background: #f1f8e9;
+      padding: 20px;
+    }
+    .result {
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+    }
+    .correct {
+      background: #c8e6c9;
+      color: #256029;
+    }
+    .wrong {
+      background: #ffcdd2;
+      color: #b71c1c;
+    }
+    button {
+      margin-top: 30px;
+      padding: 10px 30px;
+      font-size: 18px;
+      background: #42a5f5;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h2>نتیجه آزمون شما</h2>
+  <div id="results"></div>
+  <button onclick="window.location.href='index.html'">بازگشت به صفحه اصلی</button>
+  <p>طراحی شده توسط آرزو موسوی</p>
+
+  <script>
+    const resultsDiv = document.getElementById("results");
+    for (let i = 1; i <= 10; i++) {
+      const qid = "q" + i;
+      const correct = localStorage.getItem("correct_" + qid);
+      const user = localStorage.getItem(qid);
+      const isCorrect = user === correct;
+      const div = document.createElement("div");
+      div.className = "result " + (isCorrect ? "correct" : "wrong");
+      div.textContent = `سوال ${i}: ${isCorrect ? "درست" : "نادرست"}`;
+      resultsDiv.appendChild(div);
+    }
+  </script>
+</body>
+</html>

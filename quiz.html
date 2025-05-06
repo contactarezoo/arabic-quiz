@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <title>آزمون عربی</title>
+  <style>
+    body {
+      font-family: Tahoma;
+      direction: rtl;
+      background: #e0f7fa;
+      padding: 20px;
+    }
+    .question {
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    button {
+      padding: 10px 25px;
+      font-size: 18px;
+      background: #26a69a;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h2>آزمون عربی نهم</h2>
+  <form id="quizForm"></form>
+  <button onclick="submitQuiz()">نتایج آزمون</button>
+
+  <script>
+    const questions = [
+      { q: "مضارع فعل 'کَتَبَ' چیست؟", a: ["یَکتُبُ", "یَجلِسُ", "یَذهَبُ", "یَفعَلُ"], correct: 0 },
+      { q: "معنی کلمه 'مکتبه' چیست؟", a: ["کتابخانه", "مدرسه", "دفتر", "کتاب"], correct: 0 },
+      { q: "کلمه 'معلم' به چه معناست؟", a: ["دانش‌آموز", "معلم", "مدیر", "نویسنده"], correct: 1 },
+      { q: "کلمه 'تلمیذ' یعنی؟", a: ["معلم", "مدیر", "دانش‌آموز", "نویسنده"], correct: 2 },
+      { q: "مفرد کلمه 'کتب' چیست؟", a: ["کتب", "کتاب", "مکتبه", "مکاتب"], correct: 1 },
+      { q: "ضمیر 'أنا' به چه معناست؟", a: ["تو", "ما", "من", "او"], correct: 2 },
+      { q: "فعل 'ذهب' یعنی؟", a: ["آمد", "رفت", "نشست", "دید"], correct: 1 },
+      { q: "جمع کلمه 'ولد' چیست؟", a: ["أولاد", "بنات", "کتب", "مدارس"], correct: 0 },
+      { q: "معنی کلمه 'مدرسه' چیست؟", a: ["مدرسه", "کتاب", "دفتر", "کلاس"], correct: 0 },
+      { q: "کلمه 'دفتر' عربی‌اش چیست؟", a: ["مدرسه", "مکتبه", "دفتر", "کراس"], correct: 2 }
+    ];
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    const selected = shuffle([...questions]).slice(0, 10);
+    const form = document.getElementById("quizForm");
+
+    selected.forEach((item, idx) => {
+      const qid = `${idx+1}_`;
+      const shuffledAnswers = shuffle([...item.a]);
+      const correctAnswerText = item.a[item.correct];
+      const correctIndex = shuffledAnswers.indexOf(correctAnswerText);
+      const correctLetter = String.fromCharCode(97 + correctIndex);
+      localStorage.setItem(`correct_${qid}`, correctLetter);
+
+      const div = document.createElement("div");
+      div.className = "question";
+      div.innerHTML = `<p>${qid} ${item.q}</p>` +
+        shuffledAnswers.map((ans, i) => 
+          `<label><input type="radio" name="${qid}" value="${String.fromCharCode(97 + i)}"> ${ans}</label><br>`
+        ).join("");
+      form.appendChild(div);
+    });
+
+    function submitQuiz() {
+      selected.forEach((_, idx) => {
+        const qid = `q${idx+1}`;
+        const chosen = document.querySelector(`input[name="${qid}"]:checked`);
+        localStorage.setItem(qid, chosen ? chosen.value : "");
+      });
+      window.location.href = "results.html";
+    }
+  </script>
+</body>
+</html>
