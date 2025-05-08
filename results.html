@@ -7,52 +7,58 @@
     body {
       font-family: Tahoma;
       direction: rtl;
-      background: #f1f8e9;
       padding: 20px;
+      background: #e1f5fe;
+      animation: fadeIn 1s ease-in-out;
     }
     .result {
-      padding: 10px;
       margin-bottom: 10px;
-      border-radius: 8px;
+      padding: 10px;
+      border-radius: 6px;
     }
     .correct {
-      background: #c8e6c9;
-      color: #256029;
+      background-color: #c8e6c9;
+      color: #2e7d32;
     }
     .wrong {
-      background: #ffcdd2;
-      color: #b71c1c;
+      background-color: #ffcdd2;
+      color: #c62828;
     }
-    button {
-      margin-top: 30px;
-      padding: 10px 30px;
-      font-size: 18px;
-      background: #42a5f5;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
     }
   </style>
 </head>
 <body>
   <h2>نتیجه آزمون شما</h2>
   <div id="results"></div>
-  <button onclick="window.location.href='index.html'">بازگشت به صفحه اصلی</button>
   <p>طراحی شده توسط آرزو موسوی</p>
 
   <script>
+    const answers = {'q1': 'a', 'q2': 'b', 'q3': 'a', 'q4': 'c', 'q5': 'a', 'q6': 'a', 'q7': 'b', 'q8': 'c', 'q9': 'a', 'q10': 'b', 'q11': 'a', 'q12': 'c', 'q13': 'a', 'q14': 'a', 'q15': 'c'};
     const resultsDiv = document.getElementById("results");
-    for (let i = 1; i <= 10; i++) {
-      const qid = "q" + i;
-      const correct = localStorage.getItem("correct_" + qid);
-      const user = localStorage.getItem(qid);
-      const isCorrect = user === correct;
-      const div = document.createElement("div");
-      div.className = "result " + (isCorrect ? "correct" : "wrong");
-      div.textContent = `سوال ${i}: ${isCorrect ? "درست" : "نادرست"}`;
-      resultsDiv.appendChild(div);
+    for (let key in answers) {
+      const userAnswer = localStorage.getItem(key);
+      const isCorrect = userAnswer === answers[key];
+      const result = document.createElement("div");
+      result.className = "result " + (isCorrect ? "correct" : "wrong");
+      result.textContent = `سوال ${key.slice(1)}: ${isCorrect ? "درست" : "نادرست"}`;
+      resultsDiv.appendChild(result);
     }
   </script>
+<!-- دکمه بازگشت به صفحه اول -->
+<div style="text-align: center; margin-top: 40px;">
+  <button onclick="goBackToHome()" style="padding: 10px 25px; font-size: 18px; background-color: #4CAF50; color: white; border: none; border-radius: 8px; cursor: pointer;">
+    بازگشت به صفحه‌ی اول
+  </button>
+</div>
+
+<script>
+  function goBackToHome() {
+    window.location.href = "index.html";
+  }
+</script>
+
 </body>
 </html>
