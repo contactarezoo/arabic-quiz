@@ -1,14 +1,19 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fa">
 <head>
   <meta charset="UTF-8">
-  <title>آزمون عربی</title>
+  <title>آزمون عربی نهم</title>
   <style>
     body {
       font-family: Tahoma;
       direction: rtl;
       background: #e0f7fa;
       padding: 20px;
+      margin: 0;
+    }
+    h2 {
+      text-align: center;
+      color: #00695c;
     }
     .question {
       background: #ffffff;
@@ -18,18 +23,34 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
     button {
-      padding: 10px 25px;
+      display: block;
+      margin: 30px auto;
+      padding: 10px 30px;
       font-size: 18px;
-      background: #26a69a;
+      background: #00796b;
       color: white;
       border: none;
       border-radius: 10px;
       cursor: pointer;
-      margin-top: 20px;
+      transition: 0.3s;
+    }
+    button:hover {
+      background-color: #004d40;
+    }
+
+    @media (max-width: 600px) {
+      .question {
+        font-size: 16px;
+      }
+      button {
+        font-size: 16px;
+        padding: 8px 20px;
+      }
     }
   </style>
 </head>
 <body>
+
   <h2>آزمون عربی نهم</h2>
   <form id="quizForm"></form>
   <button onclick="submitQuiz()">نتایج آزمون</button>
@@ -59,39 +80,32 @@
     const selected = shuffle([...questions]).slice(0, 10);
     const form = document.getElementById("quizForm");
 
-selected.forEach((item, idx) => {
-  const qid = `q${idx + 1}`;
-  
-  // شافل گزینه‌ها (جابجایی تصادفی)
-  const shuffledAnswers = shuffle([...item.a]);
-  
-  // متن پاسخ صحیح اصلی
-  const correctAnswerText = item.a[item.correct];
+    selected.forEach((item, idx) => {
+      const qid = `q${idx + 1}`;
+      const shuffledAnswers = shuffle([...item.a]);
+      const correctAnswerText = item.a[item.correct];
+      const correctIndex = shuffledAnswers.indexOf(correctAnswerText);
+      const correctLetter = String.fromCharCode(97 + correctIndex);
+      localStorage.setItem(`correct_${qid}`, correctLetter);
 
-  // پیدا کردن مکان جدید جواب صحیح در لیست جدید
-  const correctIndex = shuffledAnswers.indexOf(correctAnswerText);
-  
-  // ذخیره پاسخ صحیح با حرف (a, b, c, d)
-  const correctLetter = String.fromCharCode(97 + correctIndex); // 'a' = 97
-  localStorage.setItem(`correct_${qid}`, correctLetter);
-
-  const div = document.createElement("div");
-  div.className = "question";
-  div.innerHTML = `<p>${qid}) ${item.q}</p>` +
-    shuffledAnswers.map((ans, i) => 
-      `<label><input type="radio" name="${qid}" value="${String.fromCharCode(97 + i)}"> ${ans}</label><br>`
-    ).join("");
-  form.appendChild(div);
-});
+      const div = document.createElement("div");
+      div.className = "question";
+      div.innerHTML = `<p>${idx + 1}) ${item.q}</p>` +
+        shuffledAnswers.map((ans, i) =>
+          `<label><input type="radio" name="${qid}" value="${String.fromCharCode(97 + i)}"> ${ans}</label><br>`
+        ).join("");
+      form.appendChild(div);
+    });
 
     function submitQuiz() {
       selected.forEach((_, idx) => {
-        const qid = `q${idx+1}`;
+        const qid = `q${idx + 1}`;
         const chosen = document.querySelector(`input[name="${qid}"]:checked`);
         localStorage.setItem(qid, chosen ? chosen.value : "");
       });
       window.location.href = "results.html";
     }
   </script>
+
 </body>
 </html>
