@@ -36,29 +36,36 @@
   <p>طراحی شده توسط آرزو موسوی</p>
 
   <script>
-    const answers = {'q1': 'a', 'q2': 'b', 'q3': 'a', 'q4': 'c', 'q5': 'a', 'q6': 'a', 'q7': 'b', 'q8': 'c', 'q9': 'a', 'q10': 'b', 'q11': 'a', 'q12': 'c', 'q13': 'a', 'q14': 'a', 'q15': 'c'};
     const resultsDiv = document.getElementById("results");
-    for (let key in answers) {
-      const userAnswer = localStorage.getItem(key);
-      const isCorrect = userAnswer === answers[key];
+
+    // تعداد سوالات (اگر همیشه 10 تا هست، ثابت بگذار، در غیر این صورت داینامیک کن)
+    const totalQuestions = 10;
+
+    for (let i = 1; i <= totalQuestions; i++) {
+      const qid = "q" + i;
+      const userAnswer = localStorage.getItem(qid);             // پاسخ کاربر
+      const correctAnswer = localStorage.getItem("correct_" + qid); // پاسخ صحیح ذخیره‌شده
+
+      const isCorrect = userAnswer === correctAnswer;
+
       const result = document.createElement("div");
       result.className = "result " + (isCorrect ? "correct" : "wrong");
-      result.textContent = `سوال ${key.slice(1)}: ${isCorrect ? "درست" : "نادرست"}`;
+      result.textContent = `سوال ${i}: ${isCorrect ? "درست" : "نادرست"}`;
       resultsDiv.appendChild(result);
     }
   </script>
-<!-- دکمه بازگشت به صفحه اول -->
-<div style="text-align: center; margin-top: 40px;">
-  <button onclick="goBackToHome()" style="padding: 10px 25px; font-size: 18px; background-color: #4CAF50; color: white; border: none; border-radius: 8px; cursor: pointer;">
-    بازگشت به صفحه‌ی اول
-  </button>
-</div>
 
-<script>
-  function goBackToHome() {
-    window.location.href = "index.html";
-  }
-</script>
+  <!-- دکمه بازگشت به صفحه اول -->
+  <div style="text-align: center; margin-top: 40px;">
+    <button onclick="goBackToHome()" style="padding: 10px 25px; font-size: 18px; background-color: #4CAF50; color: white; border: none; border-radius: 8px; cursor: pointer;">
+      بازگشت به صفحه‌ی اول
+    </button>
+  </div>
 
+  <script>
+    function goBackToHome() {
+      window.location.href = "index.html";
+    }
+  </script>
 </body>
 </html>
